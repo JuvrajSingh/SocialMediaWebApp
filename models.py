@@ -14,4 +14,7 @@ def checkLogin(username, password):
         return False, username
     else:
         return True, users[0]["id"]
-    
+
+
+def registerUser(username, password):
+    # TODO

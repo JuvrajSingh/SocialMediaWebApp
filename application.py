@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect
-from models import checkLogin
+from models import checkLogin, registerUser
 
 app = Flask(__name__)
 
@@ -51,6 +51,19 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
+
+        # Ensure username was submitted and not already taken
+        if not username:
+            # return apology("Must provide username")
+        # Ensure both password fields submitted
+        if not password or not confirmation:
+            # return apology("Please enter a password and confirm it")
+        # Ensure both password fields match
+        if password != confirmation:
+            # return apology("Passwords must match")
+
+        if registerUser(username, password) == False:
+            # return apology("Sorry, that username is already taken")
 
         # Redirect user to index/login page
         return redirect("/")
