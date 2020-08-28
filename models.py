@@ -1,5 +1,5 @@
 import sqlite3
-from flask import render_template
+from flask import render_template, redirect, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 ROOT = path.dirname(path.relpath((__file__)))
@@ -47,3 +47,16 @@ def registerUser(username, password):
 
 def apology(message):
     return render_template("apology.html", message=message)
+
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
