@@ -37,7 +37,7 @@ def login():
         elif not password:
             return apology("Must provide password")
 
-        loginSuccess, user_id = checkLogin(request.form.get("username"), request.form.get("password"))
+        loginSuccess, user_id = checkLogin(username, password)
         
         if  loginSuccess = False:
             return apology("Invalid username and/or password")

@@ -1,5 +1,6 @@
 import sqlite3
 from flask import render_template
+from werkzeug.security import generate_password_hash, check_password_hash
 
 ROOT = path.dirname(path.relpath((__file__)))
 
@@ -13,7 +14,7 @@ def checkLogin(username, password):
     users = cur.fetchall()
 
     # Ensure username exists and password is correct
-    if len(users) != 1: # or not check_password_hash(. .) TODO
+    if len(users) != 1 or not check_password_hash(rows[0]["hash"], password)
         return False, username
     else:
         return True, users[0]["id"]
@@ -33,7 +34,7 @@ def registerUser(username, password):
         return False
     
     else:
-        # pwHash = generate password hash TODO
+        pwHash = generate_password_hash(password)
         cur.execute("INSERT INTO users (username, hash), VALUES (?, ?)", username, pwHash)
 
         # Save changes in file
