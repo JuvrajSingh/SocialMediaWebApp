@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect
+from models import checkLogin
 
 app = Flask(__name__)
 
@@ -24,15 +25,14 @@ def login():
             # return apology("Must provide username")
         elif not request.form.get("password"):
             # return apology("Must provide password")
-        
-        # Query database for username
-        # TODO
 
-        # Ensure username exists and password is correct
-        # TODO
+        loginSuccess, user_id = checkLogin(request.form.get("username"), request.form.get("password"))
+        
+        if  loginSuccess = False:
+            # return apology("Invalid username and/or password")
 
         # Remember which user has logged in
-        # TODO
+        session["user_id"] = user_id
 
         return redirect("/")
     
