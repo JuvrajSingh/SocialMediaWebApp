@@ -40,7 +40,7 @@ def login():
 
         loginSuccess, user_id = checkLogin(username, password)
         
-        if  loginSuccess == False:
+        if loginSuccess == False:
             return apology("Invalid username and/or password")
 
         # Remember which user has logged in
