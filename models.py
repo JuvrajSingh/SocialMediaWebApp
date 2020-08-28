@@ -1,6 +1,8 @@
-import sqlite3
+import sqlite3 as sql
 from flask import render_template, redirect, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from os import path
+from functools import wraps
 
 ROOT = path.dirname(path.relpath((__file__)))
 
@@ -14,7 +16,7 @@ def checkLogin(username, password):
     users = cur.fetchall()
 
     # Ensure username exists and password is correct
-    if len(users) != 1 or not check_password_hash(rows[0]["hash"], password)
+    if len(users) != 1 or not check_password_hash(users[0]["hash"], password):
         return False, username
     else:
         return True, users[0]["id"]
