@@ -3,6 +3,8 @@ import sqlite3
 ROOT = path.dirname(path.relpath((__file__)))
 
 def checkLogin(username, password):
+    """Confirms whether Login details are correct"""
+
     # Query database for username
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
@@ -17,4 +19,25 @@ def checkLogin(username, password):
 
 
 def registerUser(username, password):
-    # TODO
+    """Checks whether username is taken, and if not then stores the new users details in database"""
+
+    # Query database for username
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()
+    cur.execute("SELECT * FROM users WHERE username = ?", username)
+    users = cur.fetchall()
+
+    # Ensure username not already taken
+    if len(users) != 0:
+        return False
+    
+    else:
+        # pwHash = generate password hash TODO
+        cur.execute("INSERT INTO users (username, hash), VALUES (?, ?)", username, pwHash)
+
+        # Save changes in file
+        con.commit()
+        # Close connection
+        con.close()
+
+        return True
