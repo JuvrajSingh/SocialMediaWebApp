@@ -1,4 +1,5 @@
 import sqlite3
+from flask import render_template
 
 ROOT = path.dirname(path.relpath((__file__)))
 
@@ -41,3 +42,7 @@ def registerUser(username, password):
         con.close()
 
         return True
+
+
+def apology(message):
+    return render_template("apology.html", message=message)

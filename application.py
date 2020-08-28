@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect
 from flask_session import Session
 from tempfile import mkdtemp
 
-from models import checkLogin, registerUser
+from models import checkLogin, registerUser, apology
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -33,14 +33,14 @@ def login():
         password = request.form.get("password")
         # Ensure username was submitted
         if not username:
-            # return apology("Must provide username")
+            return apology("Must provide username")
         elif not password:
-            # return apology("Must provide password")
+            return apology("Must provide password")
 
         loginSuccess, user_id = checkLogin(request.form.get("username"), request.form.get("password"))
         
         if  loginSuccess = False:
-            # return apology("Invalid username and/or password")
+            return apology("Invalid username and/or password")
 
         # Remember which user has logged in
         session["user_id"] = user_id
@@ -63,16 +63,16 @@ def register():
 
         # Ensure username was submitted and not already taken
         if not username:
-            # return apology("Must provide username")
+            return apology("Must provide username")
         # Ensure both password fields submitted
         if not password or not confirmation:
-            # return apology("Please enter a password and confirm it")
+            return apology("Please enter a password and confirm it")
         # Ensure both password fields match
         if password != confirmation:
-            # return apology("Passwords must match")
+            return apology("Passwords must match")
 
         if registerUser(username, password) == False:
-            # return apology("Sorry, that username is already taken")
+            return apology("Sorry, that username is already taken")
 
         # Redirect user to index/login page
         return redirect("/")
