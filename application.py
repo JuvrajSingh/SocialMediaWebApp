@@ -20,10 +20,12 @@ def login():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
+        username = request.form.get("username")
+        password = request.form.get("password")
         # Ensure username was submitted
-        if not request.form.get("username"):
+        if not username:
             # return apology("Must provide username")
-        elif not request.form.get("password"):
+        elif not password:
             # return apology("Must provide password")
 
         loginSuccess, user_id = checkLogin(request.form.get("username"), request.form.get("password"))
@@ -39,3 +41,19 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Redirect user to index/login page
+        return redirect("/")
+    
+    else:
+        return render_template("register.html")
