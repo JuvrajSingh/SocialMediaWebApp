@@ -11,8 +11,9 @@ def checkLogin(username, password):
 
     # Query database for username
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    con.row_factory = sql.Row  # Makes tuple hashable I think (hopefully)
     cur = con.cursor()
-    cur.execute("SELECT * FROM users WHERE username = ?", username)
+    cur.execute("SELECT * FROM users WHERE username = ?", [username])
     users = cur.fetchall()
 
     # Ensure username exists and password is correct
@@ -28,7 +29,7 @@ def registerUser(username, password):
     # Query database for username
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
-    cur.execute("SELECT * FROM users WHERE username = ?", username)
+    cur.execute("SELECT * FROM users WHERE username = ?", [username])
     users = cur.fetchall()
 
     # Ensure username not already taken
@@ -37,7 +38,7 @@ def registerUser(username, password):
     
     else:
         pwHash = generate_password_hash(password)
-        cur.execute("INSERT INTO users (username, hash), VALUES (?, ?)", username, pwHash)
+        cur.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, pwHash))
 
         # Save changes in file
         con.commit()
