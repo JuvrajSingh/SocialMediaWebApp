@@ -1,6 +1,13 @@
-drop table if exists users;
+DROP TABLE if EXISTS users;
 	CREATE TABLE users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		username TEXT NOT NULL,
 		hash TEXT NOT NULL
+);
+
+DROP TABLE if EXISTS posts;
+	CREATE TABLE posts (
+		post_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		name TEXT NOT NULL,
+		content TEXT NOT NULL
 );
