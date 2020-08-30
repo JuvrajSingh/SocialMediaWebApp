@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_cors import CORS
 from tempfile import mkdtemp
 
-from models import checkLogin, registerUser, apology, login_required, createPost, getPosts
+from models import checkLogin, registerUser, apology, login_required, createPost, getPosts, getMyPosts
 
 
 app = Flask(__name__)
@@ -100,3 +100,16 @@ def logout():
 
     # Redirect user to login form
     return redirect("/")
+
+@app.route("/myPosts", methods=["GET", "POST"])
+def myPosts():
+    if request.method == "POST":
+        post = request.form.get("post_id")
+        # Remove post from database
+        deletePost(post_id)
+
+    # Get all of current users' posts from database
+    posts = getMyPosts(session["user_id"])
+    posts.reverse()
+
+    return render_template("myPosts.html", posts=posts)

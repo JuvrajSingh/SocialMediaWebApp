@@ -82,3 +82,17 @@ def getPosts():
     cur.execute("SELECT * FROM posts")
     posts = cur.fetchall()
     return posts
+
+
+def getMyPosts(user_id):
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()
+    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
+    name = cur.fetchall()[0][0]
+    cur.execute("SELECT * FROM posts WHERE name = ?", [name])
+    posts = cur.fetchall()
+    return posts
+
+
+def deletePost(post):
+    # TODO
