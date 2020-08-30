@@ -24,8 +24,8 @@ def index():
         # Create post and store it in database
         createPost(session["user_id"], post)
 
-    # Get all the posts from the database
-    posts = getPosts()
+    # Get posts from the database from people current user is following
+    posts = getPosts(session["user_id"])
 
     return render_template("index.html", posts=posts)
 

@@ -65,6 +65,8 @@ def login_required(f):
 
 
 def createPost(user_id, content):
+    """Stores the post submitted by the current user in the database"""
+
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
@@ -74,15 +76,19 @@ def createPost(user_id, content):
     con.close()  # Close connection
 
 
-def getPosts():
+def getPosts(user_id):
+    """Returns all posts from people that current user is following"""
+
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
-    cur.execute("SELECT * FROM posts")
+    cur.execute("SELECT * FROM posts WHERE name IN (SELECT following FROM followers WHERE user = (SELECT username FROM users WHERE id = ?))", [user_id])
     posts = cur.fetchall()
     return posts
 
 
 def getPersons(user_id):
+    """Returns a list of the names of all users in the database excluding the current user"""
+
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
@@ -97,6 +103,8 @@ def getPersons(user_id):
 
 
 def followUser(user_id, following):
+    """Updates database to show who current user is now following"""
+
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
