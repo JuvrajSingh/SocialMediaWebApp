@@ -64,11 +64,12 @@ def login_required(f):
     return decorated_function
 
 
-def createPost(user_id, content):
+def createPost(content):
     """Stores the post submitted by the current user in the database"""
 
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
+    user_id = session["user_id"]
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
     name = cur.fetchall()[0][0]
     cur.execute("INSERT INTO posts (name, content) VALUES (?, ?)", (name, content))
@@ -102,11 +103,12 @@ def getPersons(user_id):
     return persons
 
 
-def followUser(user_id, following):
+def followUser(following):
     """Updates database to show who current user is now following"""
 
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
+    user_id = session["user_id"]
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
     name = cur.fetchall()[0][0]
     cur.execute("INSERT INTO followers (user, following) VALUES (?, ?)", (name, following))

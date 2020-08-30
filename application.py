@@ -22,7 +22,7 @@ def index():
     if request.method == "POST":
         post = request.form.get("post")
         # Create post and store it in database
-        createPost(session["user_id"], post)
+        createPost(post)
 
     # Get posts from the database from people current user is following
     posts = getPosts(session["user_id"])
@@ -104,7 +104,7 @@ def logout():
 def people():
     if request.method == "POST":
         following = request.form.get("following")
-        followUser(session["user_id"], following)
+        followUser(following)
 
     persons = getPersons(session["user_id"])
     return render_template("people.html", persons=persons)
