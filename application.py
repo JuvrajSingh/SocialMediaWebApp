@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, session, redirect
 from flask_session import Session
+from flask_cors import CORS
 from tempfile import mkdtemp
 
-from models import checkLogin, registerUser, apology, login_required
+from models import checkLogin, registerUser, apology, login_required, createPost, getPosts
 
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -13,12 +16,18 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    # TODO
+    if request.method == "POST":
+        post = request.form.get("post")
+        # Create post and store it in database
+        createPost(session["user_id"], post)
 
-    return render_template("index.html")
+    # Get all the posts from the database
+    posts = getPosts()
+
+    return render_template("index.html", posts=posts)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

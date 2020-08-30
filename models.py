@@ -51,6 +51,7 @@ def registerUser(username, password):
 def apology(message):
     return render_template("apology.html", message=message)
 
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -63,3 +64,21 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+
+def createPost(user_id, content):
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()
+    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
+    name = cur.fetchall()[0][0]
+    cur.execute("INSERT INTO posts (name, content) VALUES (?, ?)", (name, content))
+    con.commit()  # Save changes in file
+    con.close()  # Close connection
+
+
+def getPosts():
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()
+    cur.execute("SELECT * FROM posts")
+    posts = cur.fetchall()
+    return posts

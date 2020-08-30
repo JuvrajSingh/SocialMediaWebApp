@@ -5,5 +5,12 @@
 {% endblock %}
 
 {% block main %}
-    <!-- TODO -->
+    <form action="/" method="post">
+        <input placeholder="Post Content" name="post">
+        <input type="submit" value="Submit">
+    </form>
+    
+    {% for post in posts %}
+        <div>{{ post[1] + ": " + post[2] }}</div>
+    {% endfor %}
 {% endblock %}
