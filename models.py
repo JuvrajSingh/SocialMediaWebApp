@@ -40,10 +40,8 @@ def registerUser(username, password):
         pwHash = generate_password_hash(password)
         cur.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, pwHash))
 
-        # Save changes in file
-        con.commit()
-        # Close connection
-        con.close()
+        con.commit()  # Save changes in file
+        con.close()  # Close connection
 
         return True
 
@@ -93,5 +91,10 @@ def getPersons():
 
 
 def followUser(user_id, following):
-    # TODO
-    return
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()
+    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
+    name = cur.fetchall()[0][0]
+    cur.execute("INSERT INTO followers (user, following) VALUES (?, ?)", (name, following))
+    con.commit()  # Save changes in file
+    con.close()  # Close connection
