@@ -82,11 +82,17 @@ def getPosts():
     return posts
 
 
-def getPersons():
+def getPersons(user_id):
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
+    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
+    name = cur.fetchall()[0][0]
     cur.execute("SELECT username FROM users")
-    persons = cur.fetchall()
+    allPersons = cur.fetchall()
+    persons = []
+    for person in allPersons:
+        if person[0] != name:
+            persons.append(person[0])
     return persons
 
 

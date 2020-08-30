@@ -106,5 +106,5 @@ def people():
         following = request.form.get("following")
         followUser(session["user_id"], following)
 
-    persons = getPersons()
+    persons = getPersons(session["user_id"])
     return render_template("people.html", persons=persons)
