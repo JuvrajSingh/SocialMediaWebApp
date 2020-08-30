@@ -11,6 +11,6 @@
     </form>
     
     {% for post in posts %}
-        <div>{{ post[1] + ": " + post[2] }}</div>
+        <div>{{ "{} {}:     {}".format(post[1], post[3], post[2]) }}</div>
     {% endfor %}
 {% endblock %}

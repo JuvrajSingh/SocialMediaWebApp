@@ -26,6 +26,7 @@ def index():
 
     # Get all the posts from the database
     posts = getPosts()
+    posts.reverse()
 
     return render_template("index.html", posts=posts)
 
