@@ -1,7 +1,18 @@
 {% extends "layout.html" %}
 
 {% block title %}
+    My Posts
 {% endblock %}
 
 {% block main %}
+    {{ for post in posts }}
+        <div>
+            {{ "{} {}: {}".format(post[1], post[3], post[2]) }}
+            <a href="/myPosts" name="post_id">Delete</a>
+            <form action="/" method="post">
+                <input placeholder="Post Content" name="post">
+                <input type="submit" value="Delete">
+            </form>
+        </div>
+    {{ endfor }}
 {% endblock %}

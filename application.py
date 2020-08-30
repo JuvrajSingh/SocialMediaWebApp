@@ -104,7 +104,7 @@ def logout():
 @app.route("/myPosts", methods=["GET", "POST"])
 def myPosts():
     if request.method == "POST":
-        post = request.form.get("post_id")
+        post_id = request.form.get("post_id")
         # Remove post from database
         deletePost(post_id)
 
