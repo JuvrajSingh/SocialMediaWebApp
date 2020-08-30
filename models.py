@@ -82,3 +82,16 @@ def getPosts():
     cur.execute("SELECT * FROM posts")
     posts = cur.fetchall()
     return posts
+
+
+def getPersons():
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()
+    cur.execute("SELECT username FROM users")
+    persons = cur.fetchall()
+    return persons
+
+
+def followUser(user_id, following):
+    # TODO
+    return

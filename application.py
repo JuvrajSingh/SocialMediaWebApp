@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_cors import CORS
 from tempfile import mkdtemp
 
-from models import checkLogin, registerUser, apology, login_required, createPost, getPosts
+from models import checkLogin, registerUser, apology, login_required, createPost, getPosts, getPersons, followUser
 
 
 app = Flask(__name__)
@@ -99,3 +99,12 @@ def logout():
 
     # Redirect user to login form
     return redirect("/")
+
+@app.route("/people", methods=["GET", "POST"])
+def people():
+    if request.method == "POST":
+        # TODO define following
+        followUser(session["user_id"], following)
+
+    persons = getPersons()
+    return render_template("/people", persons=persons)
