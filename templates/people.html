@@ -8,12 +8,6 @@
     <form action="/people" method="post">
         {% for person in persons %}
             <div>
-                <!-- <label name="following" value={{person[0]}}>{{ person[0] }}</label>
-                <button type="Submit">Follow</button> -->
-
-                <!-- <label for={{ person[0] }}>{{ person[0] }}</label>
-                <input type="submit" name="following" id={{ person[0] }} value=Follow> -->
-
                 <label for={{ person[0] }}>{{ person[0] }}</label>
                 <input type="radio" name="following" id={{ person[0] }} value={{ person[0] }}>
                 <input type="submit" value="Follow">
