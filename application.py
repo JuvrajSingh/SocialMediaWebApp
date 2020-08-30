@@ -103,8 +103,8 @@ def logout():
 @app.route("/people", methods=["GET", "POST"])
 def people():
     if request.method == "POST":
-        # TODO define following
+        following = request.form.get("following")
         followUser(session["user_id"], following)
 
     persons = getPersons()
-    return render_template("/people", persons=persons)
+    return render_template("people.html", persons=persons)

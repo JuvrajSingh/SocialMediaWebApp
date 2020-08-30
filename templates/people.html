@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    People
+{% endblock %}
+
+{% block main %}
+    <form action="/people" method="post">
+        {% for person in persons %}
+            <div>
+                <label name="following">{{ person[0] }}</label>
+                <button type="Submit">Follow</button>
+            </div>
+        {% endfor %}
+    </form>
+{% endblock %}
