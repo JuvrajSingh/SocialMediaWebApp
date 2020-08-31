@@ -75,21 +75,23 @@ def createPost(content):
     con.close()  # Close connection
 
 
-def getPosts(user_id):
+def getPosts():
     """Returns all posts from people that current user is following"""
 
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
+    user_id = session["user_id"]
     cur.execute("SELECT * FROM posts WHERE name IN (SELECT following FROM followers WHERE user = (SELECT username FROM users WHERE id = ?))", [user_id])
     posts = cur.fetchall()
     return posts
 
 
-def getPersons(user_id):
+def getPersons():
     """Returns a list of the names of all users in the database excluding the current user"""
 
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
+    user_id = session["user_id"]
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
     name = cur.fetchall()[0][0]
     cur.execute("SELECT username FROM users")

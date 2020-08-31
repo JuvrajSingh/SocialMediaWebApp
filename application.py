@@ -25,7 +25,7 @@ def index():
         createPost(post)
 
     # Get posts from the database from people current user is following
-    posts = getPosts(session["user_id"])
+    posts = getPosts()
 
     return render_template("index.html", posts=posts)
 
@@ -106,5 +106,5 @@ def people():
         following = request.form.get("following")
         followUser(following)
 
-    persons = getPersons(session["user_id"])
+    persons = getPersons()
     return render_template("people.html", persons=persons)
