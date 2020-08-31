@@ -94,14 +94,11 @@ def getPersons():
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     user_id = session["user_id"]
-    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
-    name = cur.fetchall()[0][0]
-    cur.execute("SELECT username FROM users")
-    allPersons = cur.fetchall()
+    cur.execute("SELECT username FROM users WHERE NOT username = (SELECT username FROM users WHERE id = ?)", [user_id])
+    tempPersons = cur.fetchall()
     persons = []
-    for person in allPersons:
-        if person[0] != name:
-            persons.append(person[0])
+    for person in tempPersons:
+        persons.append(person[0])
     return persons
 
 
