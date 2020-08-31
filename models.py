@@ -81,7 +81,9 @@ def getPosts():
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     user_id = session["user_id"]
-    cur.execute("SELECT * FROM posts WHERE name IN (SELECT following FROM followers WHERE user = (SELECT username FROM users WHERE id = ?))", [user_id])
+    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
+    name = cur.fetchall()[0][0]
+    cur.execute("SELECT * FROM posts WHERE name IN (SELECT following FROM followers WHERE user = ?) OR name = ?", (name, name))
     posts = cur.fetchall()
     return posts
 
