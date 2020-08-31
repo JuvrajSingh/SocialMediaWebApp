@@ -70,9 +70,7 @@ def createPost(content):
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     user_id = session["user_id"]
-    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
-    name = cur.fetchall()[0][0]
-    cur.execute("INSERT INTO posts (name, content) VALUES (?, ?)", (name, content))
+    cur.execute("INSERT INTO posts (name, content) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, content))
     con.commit()  # Save changes in file
     con.close()  # Close connection
 
@@ -109,8 +107,6 @@ def followUser(following):
     con = sql.connect(path.join(ROOT, "socialMedia.db"))
     cur = con.cursor()
     user_id = session["user_id"]
-    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
-    name = cur.fetchall()[0][0]
-    cur.execute("INSERT INTO followers (user, following) VALUES (?, ?)", (name, following))
+    cur.execute("INSERT INTO followers (user, following) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, following))
     con.commit()  # Save changes in file
     con.close()  # Close connection
