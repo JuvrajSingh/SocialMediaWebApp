@@ -5,14 +5,12 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/people" method="post">
-        {% for person in persons %}
-            <div>
-                <label for={{ person }}>{{ person }}</label>
-                <input type="radio" name="following" id={{ person }} value={{ person }}>
-                <input type="submit" value="Follow">
-            </div>
-        {% endfor %}
-    </form>
+
+    {% for person in persons %}
+        <div>
+            {{ person }}
+            <a href="{{ url_for('follow', following=person) }}">Follow</a>
+        </div>
+    {% endfor %}
     
 {% endblock %}
