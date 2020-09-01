@@ -170,4 +170,9 @@ def unfollowUser(following):
     finish(con)
 
 
-#def deletePost(post):
+def deletePost(post_id):
+    """Updates database to not show post anymore"""
+
+    cur, con = initialise(1, True)
+    cur.execute("DELETE FROM posts WHERE id = ?", [post_id])
+    finish(con)
