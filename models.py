@@ -48,6 +48,10 @@ def finish(con):
     con.close()  # Close connection
 
 
+def apology(message):
+    return render_template("apology.html", message=message)
+
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -98,10 +102,6 @@ def registerUser(username, password):
         return True
 
 
-def apology(message):
-    return render_template("apology.html", message=message)
-
-
 def createPost(content):
     """Stores the post submitted by the current user in the database"""
 
@@ -117,6 +117,15 @@ def getPosts():
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
     name = cur.fetchall()[0][0]
     cur.execute("SELECT * FROM posts WHERE name IN (SELECT following FROM followers WHERE user = ?) OR name = ?", (name, name))
+    posts = cur.fetchall()
+    return posts
+
+
+def getMyPosts():
+    cur, user_id = initialise(3)
+    cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
+    name = cur.fetchall()[0][0]
+    cur.execute("SELECT * FROM posts WHERE name = ?", [name])
     posts = cur.fetchall()
     return posts
 
@@ -159,3 +168,6 @@ def unfollowUser(following):
     cur, user_id, con = initialise(3, True)
     cur.execute("DELETE FROM followers WHERE user = (SELECT username FROM users WHERE id = ?) AND following = ?", (user_id, following))
     finish(con)
+
+
+#def deletePost(post):

@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_cors import CORS
 from tempfile import mkdtemp
 
-from models import checkLogin, registerUser, apology, login_required, createPost, getPosts, getPersons, getFollowers, followUser, unfollowUser
+from models import checkLogin, registerUser, apology, login_required, createPost, getPosts, getMyPosts, getPersons, getFollowers, followUser, unfollowUser
 
 
 app = Flask(__name__)
@@ -29,6 +29,7 @@ def index():
 
     # Get posts from the database from people current user is following
     posts = getPosts()
+    posts.reverse()
 
     return render_template("index.html", posts=posts)
 
@@ -127,3 +128,20 @@ def unfollow(following):
 
     unfollowUser(following)
     return redirect("/")
+
+@app.route("/myPosts")
+def myPosts():
+    """if request.method == "POST":
+        post_id = request.form.get("post_id")
+        # Remove post from database
+        deletePost(post_id)"""
+
+    # Get all of current users' posts from database
+    posts = getMyPosts()
+    posts.reverse()
+
+    return render_template("myPosts.html", posts=posts)
+
+@app.route("/delete/<post>")
+def delete(post):
+    """Remove post from database"""
