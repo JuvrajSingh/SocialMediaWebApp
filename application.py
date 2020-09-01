@@ -21,6 +21,9 @@ Session(app)
 def index():
     if request.method == "POST":
         post = request.form.get("post")
+        # Check to make sure user hasn't left field blank
+        if not post:
+            return apology("Please enter something to post")
         # Create post and store it in database
         createPost(post)
 
