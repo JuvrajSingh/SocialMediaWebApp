@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_cors import CORS
 from tempfile import mkdtemp
 
-from models import checkLogin, registerUser, apology, login_required, createPost, getPosts, getPersons, followUser
+from models import checkLogin, registerUser, apology, login_required, createPost, getPosts, getPersons, getFollowers, followUser, unfollowUser
 
 
 app = Flask(__name__)
@@ -106,7 +106,8 @@ def people():
     """Displays a list of all users and allows current user to follow them"""
 
     persons = getPersons()
-    return render_template("people.html", persons=persons)
+    followers = getFollowers()
+    return render_template("people.html", persons=persons, followers=followers)
 
 @app.route("/follow/<following>")
 @login_required
@@ -114,4 +115,12 @@ def follow(following):
     """Current user follows user they requested to follow"""
     
     followUser(following)
+    return redirect("/")
+
+@app.route("/unfollow/<following>")
+@login_required
+def unfollow(following):
+    """Current user unfollows user they requested"""
+
+    unfollowUser(following)
     return redirect("/")
