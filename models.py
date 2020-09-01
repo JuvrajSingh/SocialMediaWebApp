@@ -141,6 +141,7 @@ def getPersons():
     persons = []
     for person in tempPersons:
         persons.append(person[0])
+    persons.sort()
     return persons
 
 
