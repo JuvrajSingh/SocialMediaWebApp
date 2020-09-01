@@ -103,11 +103,15 @@ def logout():
 @app.route("/people")
 @login_required
 def people():
+    """Displays a list of all users and allows current user to follow them"""
+
     persons = getPersons()
     return render_template("people.html", persons=persons)
 
 @app.route("/follow/<following>")
 @login_required
 def follow(following):
+    """Current user follows user they requested to follow"""
+    
     followUser(following)
     return redirect("/")

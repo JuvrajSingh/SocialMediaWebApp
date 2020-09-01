@@ -6,13 +6,60 @@ from functools import wraps
 
 ROOT = path.dirname(path.relpath((__file__)))
 
+
+def initialise(option, connection=False):
+    """
+    Initialises for use of sqlite3
+    If connection is True will also return con
+    options:
+    1 - return only cur;
+    2 - return only cur, but as a hashable tuple
+    3 - return cur and user_id
+    Return order - cur, user_id, con
+    """
+
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    if option == 2:
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        if connection == False:
+            return cur
+        else:
+            return cur, con
+    else:
+        cur = con.cursor()
+        if option == 1:
+            if connection == False:
+                return cur
+            else:
+                return cur, con
+        # Otherwise must be option 3
+        user_id = session["user_id"]
+        if connection == False:
+            return cur, user_id
+        else:
+            return cur, user_id, con
+
+
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 def checkLogin(username, password):
     """Confirms whether Login details are correct"""
 
     # Query database for username
-    con = sql.connect(path.join(ROOT, "socialMedia.db"))
-    con.row_factory = sql.Row  # Makes tuple hashable I think (hopefully)
-    cur = con.cursor()
+    cur = initialise(2)
     cur.execute("SELECT * FROM users WHERE username = ?", [username])
     users = cur.fetchall()
 
@@ -27,8 +74,7 @@ def registerUser(username, password):
     """Checks whether username is taken, and if not then stores the new users details in database"""
 
     # Query database for username
-    con = sql.connect(path.join(ROOT, "socialMedia.db"))
-    cur = con.cursor()
+    cur, con = initialise(1, True)
     cur.execute("SELECT * FROM users WHERE username = ?", [username])
     users = cur.fetchall()
 
@@ -50,26 +96,10 @@ def apology(message):
     return render_template("apology.html", message=message)
 
 
-def login_required(f):
-    """
-    Decorate routes to require login.
-
-    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 def createPost(content):
     """Stores the post submitted by the current user in the database"""
 
-    con = sql.connect(path.join(ROOT, "socialMedia.db"))
-    cur = con.cursor()
-    user_id = session["user_id"]
+    cur, user_id, con = initialise(3, True)
     cur.execute("INSERT INTO posts (name, content) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, content))
     con.commit()  # Save changes in file
     con.close()  # Close connection
@@ -78,9 +108,7 @@ def createPost(content):
 def getPosts():
     """Returns all posts from people that current user is following"""
 
-    con = sql.connect(path.join(ROOT, "socialMedia.db"))
-    cur = con.cursor()
-    user_id = session["user_id"]
+    cur, user_id = initialise(3)
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
     name = cur.fetchall()[0][0]
     cur.execute("SELECT * FROM posts WHERE name IN (SELECT following FROM followers WHERE user = ?) OR name = ?", (name, name))
@@ -91,9 +119,7 @@ def getPosts():
 def getPersons():
     """Returns a list of the names of all users in the database excluding the current user"""
 
-    con = sql.connect(path.join(ROOT, "socialMedia.db"))
-    cur = con.cursor()
-    user_id = session["user_id"]
+    cur, user_id = initialise(3)
     cur.execute("SELECT username FROM users WHERE NOT username = (SELECT username FROM users WHERE id = ?)", [user_id])
     tempPersons = cur.fetchall()
     persons = []
@@ -105,9 +131,7 @@ def getPersons():
 def followUser(following):
     """Updates database to show who current user is now following"""
 
-    con = sql.connect(path.join(ROOT, "socialMedia.db"))
-    cur = con.cursor()
-    user_id = session["user_id"]
+    cur, user_id, con = initialise(3, True)
     cur.execute("INSERT INTO followers (user, following) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, following))
     con.commit()  # Save changes in file
     con.close()  # Close connection
