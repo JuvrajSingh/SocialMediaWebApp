@@ -139,3 +139,11 @@ def followUser(following):
     cur, user_id, con = initialise(3, True)
     cur.execute("INSERT INTO followers (user, following) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, following))
     finish(con)
+
+
+def unfollowUser(following):
+    """Updates database to show current user is no longer following selected user"""
+    
+    cur, user_id, con = initialise(3, True)
+    cur.execute("DELETE FROM followers WHERE user = (SELECT username FROM users WHERE id = ?) AND following = ?", (user_id, following))
+    finish(con)
