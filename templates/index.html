@@ -7,13 +7,14 @@
 {% block main %}
     <form action="/" method="post">
         <input placeholder="Post Content" name="post">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Post">
     </form>
+    <br>
     
     {% for post in posts %}
         <div>
             <p>
-                {{ post[1] }}
+                <b>{{ post[1] }}</b>
                 <span class="datetime">{{ post[3] }}</span>
             </p>
             <p>{{ post[2] }}</p><hr>
