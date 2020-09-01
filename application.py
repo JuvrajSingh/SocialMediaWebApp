@@ -121,7 +121,7 @@ def follow(following):
     """Current user follows user they requested to follow"""
     
     followUser(following)
-    return redirect("/")
+    return redirect("/people")
 
 @app.route("/unfollow/<following>")
 @login_required
@@ -129,7 +129,7 @@ def unfollow(following):
     """Current user unfollows user they requested"""
 
     unfollowUser(following)
-    return redirect("/")
+    return redirect("/people")
 
 @app.route("/myPosts")
 def myPosts():
@@ -145,4 +145,4 @@ def delete(post_id):
     """Remove post from database"""
 
     deletePost(post_id)
-    return redirect("/")
+    return redirect("/myPosts")
