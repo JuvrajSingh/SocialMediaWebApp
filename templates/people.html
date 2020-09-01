@@ -6,16 +6,17 @@
 
 {% block main %}
 
-    {% for person in persons %}
-        <div>
-            <p>
+    <table>
+        {% for person in persons %}
+            <tr>
+                <td>{{ person }}</td>
                 {% if person not in followers %}
-                    {{ person }} <a class="btn btn-primary btn-sm" href="{{ url_for('follow', following=person) }}">Follow</a>
+                    <td><a class="btn btn-primary btn-sm" href="{{ url_for('follow', following=person) }}">Follow</a></td>
                 {% else %}
-                    {{ person }} <a class="btn btn-primary btn-sm" href="{{ url_for('unfollow', following=person) }}">Unfollow</a>
+                    <td><a class="btn btn-primary btn-sm" href="{{ url_for('unfollow', following=person) }}">Unfollow</a></td>
                 {% endif %}
-            </p>
-        </div>
-    {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
     
 {% endblock %}
