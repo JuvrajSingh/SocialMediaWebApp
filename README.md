@@ -14,3 +14,5 @@ Follow other users
 Unfollow users they currently follow
 
 View posts written by users they follow
+
+Delete their own posts
