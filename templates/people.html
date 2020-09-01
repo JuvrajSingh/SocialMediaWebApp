@@ -8,8 +8,7 @@
 
     {% for person in persons %}
         <div>
-            {{ person }}
-            <a href="{{ url_for('follow', following=person) }}">Follow</a>
+            <p>{{ person }} <a class="btn btn-primary btn-sm" href="{{ url_for('follow', following=person) }}">Follow</a></p>
         </div>
     {% endfor %}
     
