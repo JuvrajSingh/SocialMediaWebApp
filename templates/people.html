@@ -8,7 +8,13 @@
 
     {% for person in persons %}
         <div>
-            <p>{{ person }} <a class="btn btn-primary btn-sm" href="{{ url_for('follow', following=person) }}">Follow</a></p>
+            <p>
+                {% if person not in followers %}
+                    {{ person }} <a class="btn btn-primary btn-sm" href="{{ url_for('follow', following=person) }}">Follow</a>
+                {% else %}
+                    {{ person }} <a class="btn btn-primary btn-sm" href="{{ url_for('unfollow', following=person) }}">Unfollow</a>
+                {% endif %}
+            </p>
         </div>
     {% endfor %}
     
