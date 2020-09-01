@@ -11,6 +11,12 @@
     </form>
     
     {% for post in posts %}
-        <div>{{ "{} {}: {}".format(post[1], post[3], post[2]) }}</div>
+        <div>
+            <p>
+                {{ post[1] }}
+                <span class="datetime">{{ post[3] }}</span>
+            </p>
+            <p>{{ post[2] }}</p><hr>
+        </div>
     {% endfor %}
 {% endblock %}
