@@ -100,12 +100,14 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-@app.route("/people", methods=["GET", "POST"])
+@app.route("/people")
+@login_required
 def people():
     persons = getPersons()
     return render_template("people.html", persons=persons)
 
 @app.route("/follow/<following>")
+@login_required
 def follow(following):
     followUser(following)
     return redirect("/")
