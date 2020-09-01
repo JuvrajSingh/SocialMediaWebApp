@@ -19,6 +19,8 @@ Session(app)
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
+    """User is displayed with a box where they can type and submit a post. Below that are posts from users they follow"""
+    
     if request.method == "POST":
         post = request.form.get("post")
         # Check to make sure user hasn't left field blank
@@ -131,7 +133,8 @@ def unfollow(following):
 
 @app.route("/myPosts")
 def myPosts():
-    # Get all of current users' posts from database
+    """Get all of current users' posts from database and displays webpage with it"""
+
     posts = getMyPosts()
     posts.reverse()
 

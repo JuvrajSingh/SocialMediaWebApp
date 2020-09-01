@@ -111,7 +111,7 @@ def createPost(content):
 
 
 def getPosts():
-    """Returns all posts from people that current user is following"""
+    """Returns all posts from people that current user is following, and their own posts"""
 
     cur, user_id = initialise(3)
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
@@ -122,6 +122,8 @@ def getPosts():
 
 
 def getMyPosts():
+    """Returns all posts made by current user"""
+    
     cur, user_id = initialise(3)
     cur.execute("SELECT username FROM users WHERE id = ?", [user_id])
     name = cur.fetchall()[0][0]
