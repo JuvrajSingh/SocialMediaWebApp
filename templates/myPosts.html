@@ -7,8 +7,8 @@
 {% block main %}
     {% for post in posts %}
         <div>
-            {{ "{} {}: {}".format(post[1], post[3], post[2]) }}
-            <a class="btn btn-primary btn-sm" href="/myPosts">Delete</a>
+            <p>{{ "{} {}: {}".format(post[1], post[3], post[2]) }}
+            <a class="btn btn-primary btn-sm" href="{{ url_for('delete', post_id=post[0]) }}">Delete</a></p>
         </div>
     {% endfor %}
 {% endblock %}
