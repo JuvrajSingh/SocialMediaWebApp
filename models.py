@@ -41,6 +41,13 @@ def initialise(option, connection=False):
             return cur, user_id, con
 
 
+def finish(con):
+    """Commits and closes sql connection after saving changes"""
+
+    con.commit()  # Save changes in file
+    con.close()  # Close connection
+
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -86,8 +93,7 @@ def registerUser(username, password):
         pwHash = generate_password_hash(password)
         cur.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, pwHash))
 
-        con.commit()  # Save changes in file
-        con.close()  # Close connection
+        finish(con)
 
         return True
 
@@ -101,8 +107,7 @@ def createPost(content):
 
     cur, user_id, con = initialise(3, True)
     cur.execute("INSERT INTO posts (name, content) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, content))
-    con.commit()  # Save changes in file
-    con.close()  # Close connection
+    finish(con)
 
 
 def getPosts():
@@ -133,5 +138,4 @@ def followUser(following):
 
     cur, user_id, con = initialise(3, True)
     cur.execute("INSERT INTO followers (user, following) VALUES ((SELECT username FROM users WHERE id = ?), ?)", (user_id, following))
-    con.commit()  # Save changes in file
-    con.close()  # Close connection
+    finish(con)
