@@ -133,6 +133,18 @@ def getPersons():
     return persons
 
 
+def getFollowers():
+    """Returns a list of names of poeple that the current user is following"""
+
+    cur, user_id = initialise(3)
+    cur.execute("SELECT following FROM followers WHERE user = (SELECT username FROM users WHERE id = ?)", [user_id])
+    tempFollowers = cur.fetchall()
+    followers = []
+    for follower in tempFollowers:
+        followers.append(follower[0])
+    return followers
+
+
 def followUser(following):
     """Updates database to show who current user is now following"""
 
