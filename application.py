@@ -101,15 +101,19 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-@app.route("/myPosts", methods=["GET", "POST"])
+@app.route("/myPosts")
 def myPosts():
-    if request.method == "POST":
+    """if request.method == "POST":
         post_id = request.form.get("post_id")
         # Remove post from database
-        deletePost(post_id)
+        deletePost(post_id)"""
 
     # Get all of current users' posts from database
     posts = getMyPosts(session["user_id"])
     posts.reverse()
 
     return render_template("myPosts.html", posts=posts)
+
+@app.route("/delete/<post>")
+def delete(post):
+    """Remove post from database"""

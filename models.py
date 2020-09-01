@@ -95,4 +95,5 @@ def getMyPosts(user_id):
 
 
 def deletePost(post):
-    # TODO
+    con = sql.connect(path.join(ROOT, "socialMedia.db"))
+    cur = con.cursor()

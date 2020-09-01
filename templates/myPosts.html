@@ -5,14 +5,10 @@
 {% endblock %}
 
 {% block main %}
-    {{ for post in posts }}
+    {% for post in posts %}
         <div>
             {{ "{} {}: {}".format(post[1], post[3], post[2]) }}
-            <a href="/myPosts" name="post_id">Delete</a>
-            <form action="/" method="post">
-                <input placeholder="Post Content" name="post">
-                <input type="submit" value="Delete">
-            </form>
+            <a class="btn btn-primary btn-sm" href="/myPosts">Delete</a>
         </div>
-    {{ endfor }}
+    {% endfor %}
 {% endblock %}
